@@ -39,6 +39,7 @@ public:
 	void addPiece(PiecePtr& piece);
 //删除一颗棋子
 	void delPiece(PiecePtr& piece);
+	void outAllPiecesInfo();
 
 private:
 	void delPieceW(PiecePtr& piece);

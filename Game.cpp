@@ -115,6 +115,13 @@ GameState Game::setState(GameState state) {
 	state_ = state;
 }
 
+void Game::outAllPiecesInfo() {
+	cout << "player1 : " << player1_->getName() << " | color : " << "white | numbers : " << piecesW_.size() << " | pieces info :" << endl;
+	for (auto &piece : piecesW_) cout << piece << endl;
+	cout << "player2 : " << player1_->getName() << " | color : " << "white | numbers : " << piecesB_.size() << " | pieces info :" << endl;
+	for (auto &piece : piecesB_) cout << piece << endl;
+}
+
 void Game::setPlayer(std::istream& is, std::ostream& os) {
 	std::string name1("player1"), name2("player2");
 	while (1) {
@@ -157,7 +164,7 @@ void Game::start() {
 		std::string().swap(record);
 		record += getTurn()->getName() + ": ";
 
-		cout << record << ": ";
+		cout << record;
 		op.readCommand();
 #ifdef DEBUG_ON
 		cout << op << endl;
@@ -173,6 +180,7 @@ void Game::start() {
 				setState(OVER);
 				execFlag = true;
 				cout << "game over!!" << endl;
+				outAllPiecesInfo();
 				break;
 			case YIELD:
 				execFlag = true;
