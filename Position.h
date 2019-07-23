@@ -1,12 +1,11 @@
 /************************************************************************
     > File Name: Position.h
     > Author: huang
-    > Mail: 13100937921@163.com 
+    > Mail: moon7921@163.com 
     > Created Time: 2019年07月21日 星期日 08时52分59秒
 ************************************************************************/
 #ifndef POSITION_H
 #define POSITION_H
-#include <iostream>
 
 class Position {
 friend std::ostream& operator<<(std::ostream& os, const Position& position);
@@ -24,11 +23,9 @@ public:
 	}
 	std::string toStr() {
 		std::string res;
-		res += std::to_string(x_);
-		res += " ";
-		res += std::to_string(y_);
+		res += std::to_string(x_) + " " + std::to_string(y_);
 		return res;
-	}
+	} 
 public:
 	int x_;
 	int y_;

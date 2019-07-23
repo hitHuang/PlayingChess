@@ -1,7 +1,7 @@
 /************************************************************************
     > File Name: Game.h
     > Author: huang
-    > Mail: 13100937921@163.com 
+    > Mail: moon7921@163.com 
     > Created Time: 2019年07月21日 星期日 08时30分18秒
 ************************************************************************/
 
@@ -31,8 +31,8 @@ public:
 	typedef std::shared_ptr<Action> ActionPtr;
 
 public:
-	virtual void init() { }
 	void start();
+	virtual void init() { }
 
 public:
 	int getPieceNums(ColorType type) const ;
@@ -46,6 +46,7 @@ private:
 	void delPieceB(PiecePtr& piece);
 
 public:
+//每次有效操作后切换到另一个玩家
 	void setTurn(PlayerType type);
 	PlayerPtr getTurn() const ;
 	void turn();
@@ -54,11 +55,10 @@ public:
 	GameState setState(GameState state);
 
 protected:
-//初始化时，从终端获取并设置player
+//初始化player
 	void setPlayer(std::istream& is, std::ostream& os);
 
-//protected:
-public:
+protected:
 	GameType type_;
 	GameState state_;
 	BoardPtr board_;
@@ -85,9 +85,11 @@ public:
 	virtual void init() override ;
 
 private:
+//国际象棋中初始化棋盘上的棋子
 	void initPieces();
 };
 
+//包装Game的工厂类，实际上为单例
 class GameFactroy{
 public:
 	static GamePtr getGame();

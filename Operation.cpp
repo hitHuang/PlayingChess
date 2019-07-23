@@ -1,7 +1,7 @@
 /************************************************************************
     > File Name: Operation.cpp
     > Author: huang
-    > Mail: 13100937921@163.com 
+    > Mail: moon7921@163.com 
     > Created Time: 2019年07月22日 星期一 16时13分19秒
 ************************************************************************/
 
@@ -35,6 +35,7 @@ void Operation::readCommand() {
 	if (op == PLACE || op == WIPE || op == QUERY) {
 		cin >> x1 >> y1;
 		Position position(x1, y1);
+		//Position position(cin);
 		setPosition1(position);
 		return ;
 	}
@@ -52,15 +53,15 @@ std::string Operation::toStr() {
 	OpType op = getType();
 	res += op2str[op];
 	if (op == PLACE || op == WIPE || op == QUERY) {
-		res += " pos1(";
+		res += " pos(";
 		res += getPosition1().toStr();
 		res += ") ";
 	}
 	else if (op == MOVE || op == EAT) {
-		res += " pos1(";
+		res += " pos(";
 		res += getPosition1().toStr();
 		res += ") ";
-		res += " pos2(";
+		res += " pos(";
 		res += getPosition2().toStr();
 		res += ") ";
 	}

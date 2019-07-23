@@ -1,7 +1,7 @@
 /************************************************************************
     > File Name: Game.cpp
     > Author: huang
-    > Mail: 13100937921@163.com 
+    > Mail: moon7921@163.com 
     > Created Time: 2019年07月21日 星期日 10时59分26秒
 ************************************************************************/
 #include <iostream>
@@ -16,8 +16,9 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+//簿记
 struct LOG {
-	LOG() : of_(std::ofstream("log.txt")) {}
+	LOG(const char* file) : of_(std::ofstream(file)) {}
 	~LOG() {
 		of_.close();
 	}
@@ -31,6 +32,7 @@ private:
 
 int Player::count_ = 0;
 GamePtr GameFactroy::game_ = GamePtr();
+
 Game::Game(GameType type) : type_(type), state_(READY), action_(new Action(this)) {
 	board_ = BoardFactory::getBoard(type_);
 	setPlayer(std::cin, std::cout);
@@ -136,19 +138,30 @@ void Game::setPlayer(std::istream& is, std::ostream& os) {
 
 void Game::start() {
 	init();
-	LOG Log;
-	cout << "game start :)" << endl;
+
 	setState(RUNNING);
+
 	Operation op;
 	OpType command;
 	PiecePtr queryRes;
-	std::string record;
 	std::pair<int, int> statRes;
+	bool execFlag;
+
+	LOG Log("log.txt");
+	cout << "game start :)" << endl;
+
+	std::string record;//存放簿记内容
+
 	while (getState() == RUNNING) {
+		execFlag = false;
 		std::string().swap(record);
-		cout << getTurn()->getName() << ": ";
+		record += getTurn()->getName() + ": ";
+
+		cout << record << ": ";
 		op.readCommand();
-		//cout << op << endl;
+#ifdef DEBUG_ON
+		cout << op << endl;
+#endif
 		command = op.getType();
 		Position position1 = op.getPosition1();
 		Position position2 = op.getPosition2();
@@ -158,19 +171,16 @@ void Game::start() {
 				break;
 			case END:
 				setState(OVER);
-				record += getTurn()->getName() + ": ";
-				record += op.toStr();
+				execFlag = true;
 				cout << "game over!!" << endl;
 				break;
 			case YIELD:
-				record += getTurn()->getName() + ": ";
-				record += op.toStr();
+				execFlag = true;
 				turn();
 				break;
 			case PLACE:
 				if (action_->place(position1)) {
-					record += getTurn()->getName() + ": ";
-					record += op.toStr();
+					execFlag = true;
 					turn();
 				}
 				else {
@@ -179,8 +189,7 @@ void Game::start() {
 				break;
 			case MOVE:
 				if (action_->move(position1, position2)) {
-					record += getTurn()->getName() + ": ";
-					record += op.toStr();
+					execFlag = true;
 					turn();
 				}
 				else {
@@ -192,14 +201,12 @@ void Game::start() {
 					cout << "this operation is invalid,try again :("  << endl;
 				}
 				else {
-					record += getTurn()->getName() + ": ";
-					record += op.toStr();
+					execFlag = true;
 				}
 				break;
 			case EAT:
 				if (action_->eat(position1, position2)) {
-					record += getTurn()->getName() + ": ";
-					record += op.toStr();
+					execFlag = true;
 					turn();
 				}
 				else {
@@ -223,8 +230,8 @@ void Game::start() {
 			default:
 				break;
 		}
-		if (!record.empty()) {
-			record += "\n";
+		if (execFlag) {
+			record += op.toStr();
 			Log << record;
 		}
 	}

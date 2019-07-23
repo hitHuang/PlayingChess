@@ -1,0 +1,3 @@
+huang: place pos(9 9) 
+liang: place pos(9 8) 
+huang: end
