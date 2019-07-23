@@ -147,7 +147,7 @@ void Game::start() {
 	std::pair<int, int> statRes;
 	bool execFlag;
 
-	LOG Log("log.txt");
+	LOG Log("game.log");
 	cout << "game start :)" << endl;
 
 	std::string record;//存放簿记内容

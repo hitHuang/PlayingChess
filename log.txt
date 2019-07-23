@@ -1,2 +1,0 @@
-huang: move pos(0 0)  pos(5 5) 
-liang: end
