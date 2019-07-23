@@ -11,11 +11,9 @@
 #include "Player.h"
 #include "Position.h"
 
-using std::cout;
-using std::endl;
-
-bool Action::place(Position& position) {
+bool Action::place(Game* game_, Position& position) {
 	if (game_->getType() == GO) return false;
+	BoardPtr board_ = game_->getBoard();
 	if (!board_->isInBounds(position))	return false;
 	if (!board_->isFree(position))	return false;
 	PlayerPtr player = game_->getTurn();
@@ -30,8 +28,9 @@ bool Action::place(Position& position) {
 	return true;
 }
 
-bool Action::wipe(Position& position) {
+bool Action::wipe(Game* game_, Position& position) {
 	if (game_->getType() == GO)	return false;
+	BoardPtr board_ = game_->getBoard();
 	if (!board_->isInBounds(position))	return false;
 	if (board_->isFree(position))	return false;
 	PiecePtr piece = board_->getPieceOnBoard(position);
@@ -41,8 +40,9 @@ bool Action::wipe(Position& position) {
 	return true;
 }
 
-bool Action::move(Position& position1, Position& position2) {
+bool Action::move(Game* game_, Position& position1, Position& position2) {
 	if (game_->getType() == CHESS)	return false;
+	BoardPtr board_ = game_->getBoard();
 	if (!board_->isInBounds(position1) || !board_->isInBounds(position2))	return false;
 	if (position1 == position2)	return false;
 	if (board_->isFree(position1) || !(board_->isFree(position2)))	return false;
@@ -54,8 +54,9 @@ bool Action::move(Position& position1, Position& position2) {
 	return true;
 }
 
-bool Action::eat(Position& position1, Position& position2) {
+bool Action::eat(Game* game_, Position& position1, Position& position2) {
 	if (game_->getType() == CHESS)	return false;
+	BoardPtr board_ = game_->getBoard();
 	if (!board_->isInBounds(position1) || !board_->isInBounds(position2))	return false;
 	if (position1 == position2)	return false;
 	if (board_->isFree(position1) || board_->isFree(position2))	return false;
@@ -71,7 +72,8 @@ bool Action::eat(Position& position1, Position& position2) {
 	return true;
 }
 
-PiecePtr Action::query(Position& position) {
+PiecePtr Action::query(Game* game_, Position& position) {
+	BoardPtr board_ = game_->getBoard();
 	if (board_->isFree(position)) {
 		return PiecePtr();
 	}
@@ -81,7 +83,7 @@ PiecePtr Action::query(Position& position) {
 	}
 }
 
-std::pair<int, int> Action::stat() {
+std::pair<int, int> Action::stat(Game* game_) {
 	int pieceNums1 = game_->getPieceNums(WHITE);
 	int pieceNums2 = game_->getPieceNums(BLACK);
 	return {pieceNums1, pieceNums2};

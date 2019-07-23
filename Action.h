@@ -14,31 +14,21 @@ class Piece;
 class Player;
 class Position;
 
+//Action接口类
 class Action {
 public:
 	typedef std::shared_ptr<Piece>  PiecePtr;
 	typedef std::shared_ptr<Board>  BoardPtr;
 	typedef std::shared_ptr<Player> PlayerPtr;
 	typedef std::shared_ptr<Game> 	GamePtr;
-public:
-	Action(Game* game) : game_(game) { }
-	Action(const Action&) = delete;
-	Action& operator=(const Action&) = delete;
-public:
-//指定Action操作的Board对象
-	void setBoard(BoardPtr& board) { board_ = board; }
 
 public:
-	bool place(Position& position);
-	bool move(Position& position1, Position& position2);
-	bool wipe(Position& position);
-	bool eat(Position& position1, Position& position2);
-	PiecePtr query(Position& postion);
-	std::pair<int, int> stat();
-
-private:
-	Game* game_;
-	BoardPtr board_;
+	bool place(Game* game_, Position& position);
+	bool move(Game* game_, Position& position1, Position& position2);
+	bool wipe(Game* game_, Position& position);
+	bool eat(Game* game_, Position& position1, Position& position2);
+	PiecePtr query(Game* game_, Position& postion);
+	std::pair<int, int> stat(Game* game_);
 };
 
 #endif

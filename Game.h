@@ -11,16 +11,15 @@
 #include <memory>
 #include <unordered_map>
 #include "types.h"
+#include "Action.h"
 
-class Game;
 class Board;
 class Piece;
 class Player;
-class Action;
 
 typedef std::shared_ptr<Game> GamePtr;
 
-class Game {
+class Game : public Action {
 public:
 	Game(GameType type);
 	Game(const Game&) = delete;
@@ -46,13 +45,15 @@ private:
 	void delPieceB(PiecePtr& piece);
 
 public:
-//每次有效操作后切换到另一个玩家
+//每次有效action后切换到另一个player
 	void setTurn(PlayerType type);
 	PlayerPtr getTurn() const ;
 	void turn();
 	GameType getType() const ;
 	GameState getState() const ;
 	GameState setState(GameState state);
+
+	BoardPtr getBoard() { return board_; }
 
 protected:
 //初始化player
@@ -62,14 +63,12 @@ protected:
 	GameType type_;
 	GameState state_;
 	BoardPtr board_;
-//国际象棋中的16颗白色和黑色棋子，围棋情况下初始为空
+//当前＂存活＂的Piece
 	std::vector<PiecePtr> piecesW_;
 	std::vector<PiecePtr> piecesB_;
 	PlayerPtr player1_;
 	PlayerPtr player2_;
 	PlayerType whosTurn_;
-//动作
-	ActionPtr action_;
 };
 
 class ChessGame : public Game {

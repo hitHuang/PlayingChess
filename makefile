@@ -16,4 +16,4 @@ Action.o:Action.cpp Action.h
 Operation.o:Operation.cpp Operation.h
 	g++ -g -c Operation.cpp
 .PHONY clean:
-	rm -f *.o
+	rm -f *.o *.log test main

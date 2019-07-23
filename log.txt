@@ -1,3 +1,2 @@
-huang: place pos(9 9) 
-liang: place pos(9 8) 
-huang: end
+huang: move pos(0 0)  pos(5 5) 
+liang: end

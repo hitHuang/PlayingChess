@@ -33,11 +33,11 @@ private:
 int Player::count_ = 0;
 GamePtr GameFactroy::game_ = GamePtr();
 
-Game::Game(GameType type) : type_(type), state_(READY), action_(new Action(this)) {
+Game::Game(GameType type) : type_(type), state_(READY) {
 	board_ = BoardFactory::getBoard(type_);
 	setPlayer(std::cin, std::cout);
 	setTurn(PLAYER1);
-	action_->setBoard(board_);
+	//action_->setBoard(board_);
 }
 
 int Game::getPieceNums(ColorType type) const {
@@ -179,7 +179,7 @@ void Game::start() {
 				turn();
 				break;
 			case PLACE:
-				if (action_->place(position1)) {
+				if (place(this, position1)) {
 					execFlag = true;
 					turn();
 				}
@@ -188,7 +188,7 @@ void Game::start() {
 				}
 				break;
 			case MOVE:
-				if (action_->move(position1, position2)) {
+				if (move(this, position1, position2)) {
 					execFlag = true;
 					turn();
 				}
@@ -197,7 +197,7 @@ void Game::start() {
 				}
 				break;
 			case WIPE:
-				if (!action_->wipe(position1)) {
+				if (wipe(this, position1)) {
 					cout << "this operation is invalid,try again :("  << endl;
 				}
 				else {
@@ -205,7 +205,7 @@ void Game::start() {
 				}
 				break;
 			case EAT:
-				if (action_->eat(position1, position2)) {
+				if (eat(this, position1, position2)) {
 					execFlag = true;
 					turn();
 				}
@@ -214,7 +214,7 @@ void Game::start() {
 				}
 				break;
 			case QUERY:
-				queryRes = action_->query(position1);
+				queryRes = query(this, position1);
 				if (!queryRes) {
 					cout << "this position is free!!" << endl;
 				} 
@@ -223,7 +223,7 @@ void Game::start() {
 				}
 				break;
 			case STAT:
-				statRes = action_->stat();
+				statRes = stat(this);
 				cout << "white piece numbers : " << statRes.first << " | " << 
 						"black piece numbers : " << statRes.second << endl;
 				break;
