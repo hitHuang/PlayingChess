@@ -156,7 +156,7 @@ void Game::start() {
 
 	LOG Log("game.log");
 	cout << "game start :)" << endl;
-
+	
 	std::string record;//存放簿记内容
 
 	while (getState() == RUNNING) {

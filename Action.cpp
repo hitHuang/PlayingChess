@@ -11,80 +11,80 @@
 #include "Player.h"
 #include "Position.h"
 
-bool Action::place(Game* game_, Position& position) {
-	if (game_->getType() == GO) return false;
-	BoardPtr board_ = game_->getBoard();
-	if (!board_->isInBounds(position))	return false;
-	if (!board_->isFree(position))	return false;
-	PlayerPtr player = game_->getTurn();
+bool Action::place(Game* game, Position& position) {
+	if (game->getType() == GO) return false;
+	BoardPtr board = game->getBoard();
+	if (!board->isInBounds(position))	return false;
+	if (!board->isFree(position))	return false;
+	PlayerPtr player = game->getTurn();
 	ColorType color;
 	if (player->getType() == PLAYER1) color = WHITE;
 	else	color = BLACK;
 	PiecePtr piece = PieceFactory::getPiece(player, color);
 	piece->setState(ONBOARD);
 	piece->setPosition(position);
-	board_->placePieceOnBoard(piece);
-	game_->addPiece(piece);
+	board->placePieceOnBoard(piece);
+	game->addPiece(piece);
 	return true;
 }
 
-bool Action::wipe(Game* game_, Position& position) {
-	if (game_->getType() == GO)	return false;
-	BoardPtr board_ = game_->getBoard();
-	if (!board_->isInBounds(position))	return false;
-	if (board_->isFree(position))	return false;
-	PiecePtr piece = board_->getPieceOnBoard(position);
-	if (piece->getOwner() == game_->getTurn()) return false;
-	board_->wipePieceOnBoard(position);
-	game_->delPiece(piece);
+bool Action::wipe(Game* game, Position& position) {
+	if (game->getType() == GO)	return false;
+	BoardPtr board = game->getBoard();
+	if (!board->isInBounds(position))	return false;
+	if (board->isFree(position))	return false;
+	PiecePtr piece = board->getPieceOnBoard(position);
+	if (piece->getOwner() == game->getTurn()) return false;
+	board->wipePieceOnBoard(position);
+	game->delPiece(piece);
 	return true;
 }
 
-bool Action::move(Game* game_, Position& position1, Position& position2) {
-	if (game_->getType() == CHESS)	return false;
-	BoardPtr board_ = game_->getBoard();
-	if (!board_->isInBounds(position1) || !board_->isInBounds(position2))	return false;
+bool Action::move(Game* game, Position& position1, Position& position2) {
+	if (game->getType() == CHESS)	return false;
+	BoardPtr board = game->getBoard();
+	if (!board->isInBounds(position1) || !board->isInBounds(position2))	return false;
 	if (position1 == position2)	return false;
-	if (board_->isFree(position1) || !(board_->isFree(position2)))	return false;
-	PiecePtr piece = board_->getPieceOnBoard(position1);
-	if (piece->getOwner() != game_->getTurn())	return false;
-	board_->wipePieceOnBoard(position1);
+	if (board->isFree(position1) || !(board->isFree(position2)))	return false;
+	PiecePtr piece = board->getPieceOnBoard(position1);
+	if (piece->getOwner() != game->getTurn())	return false;
+	board->wipePieceOnBoard(position1);
 	piece->setPosition(position2);
-	board_->placePieceOnBoard(piece);
+	board->placePieceOnBoard(piece);
 	return true;
 }
 
-bool Action::eat(Game* game_, Position& position1, Position& position2) {
-	if (game_->getType() == CHESS)	return false;
-	BoardPtr board_ = game_->getBoard();
-	if (!board_->isInBounds(position1) || !board_->isInBounds(position2))	return false;
+bool Action::eat(Game* game, Position& position1, Position& position2) {
+	if (game->getType() == CHESS)	return false;
+	BoardPtr board = game->getBoard();
+	if (!board->isInBounds(position1) || !board->isInBounds(position2))	return false;
 	if (position1 == position2)	return false;
-	if (board_->isFree(position1) || board_->isFree(position2))	return false;
-	PiecePtr piece1 = board_->getPieceOnBoard(position1);
-	PiecePtr piece2 = board_->getPieceOnBoard(position2);
-	if (piece1->getOwner() != game_->getTurn()) return false;
-	if (piece2->getOwner() == game_->getTurn()) return false;
-	board_->wipePieceOnBoard(position2);
-	board_->wipePieceOnBoard(position1);
+	if (board->isFree(position1) || board->isFree(position2))	return false;
+	PiecePtr piece1 = board->getPieceOnBoard(position1);
+	PiecePtr piece2 = board->getPieceOnBoard(position2);
+	if (piece1->getOwner() != game->getTurn()) return false;
+	if (piece2->getOwner() == game->getTurn()) return false;
+	board->wipePieceOnBoard(position2);
+	board->wipePieceOnBoard(position1);
 	piece1->setPosition(position2);
-	board_->placePieceOnBoard(piece1);
-	game_->delPiece(piece2);
+	board->placePieceOnBoard(piece1);
+	game->delPiece(piece2);
 	return true;
 }
 
-PiecePtr Action::query(Game* game_, Position& position) {
-	BoardPtr board_ = game_->getBoard();
-	if (board_->isFree(position)) {
+PiecePtr Action::query(Game* game, Position& position) {
+	BoardPtr board = game->getBoard();
+	if (board->isFree(position)) {
 		return PiecePtr();
 	}
 	else {
-		PiecePtr piece = board_->getPieceOnBoard(position);
+		PiecePtr piece = board->getPieceOnBoard(position);
 		return piece;
 	}
 }
 
-std::pair<int, int> Action::stat(Game* game_) {
-	int pieceNums1 = game_->getPieceNums(WHITE);
-	int pieceNums2 = game_->getPieceNums(BLACK);
+std::pair<int, int> Action::stat(Game* game) {
+	int pieceNums1 = game->getPieceNums(WHITE);
+	int pieceNums2 = game->getPieceNums(BLACK);
 	return {pieceNums1, pieceNums2};
 }
