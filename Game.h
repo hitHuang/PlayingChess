@@ -31,7 +31,6 @@ public:
 
 public:
 	void start();
-	virtual void init() { }
 
 public:
 	int getPieceNums(ColorType type) const ;
@@ -59,6 +58,7 @@ public:
 protected:
 //初始化player
 	void setPlayer(std::istream& is, std::ostream& os);
+	virtual void init() { }
 
 protected:
 	GameType type_;
