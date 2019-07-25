@@ -19,7 +19,7 @@ typedef std::shared_ptr<Player> PlayerPtr;
 
 class Piece {
 public:
-	Piece(PlayerPtr owner, ColorType color, RoleType role, StateType state = INIT, Position position = Position(-1, -1)) 
+	Piece(PlayerPtr owner, ColorType color, RoleType role, PieceState state = INIT, Position position = Position(-1, -1)) 
 		: owner_(owner), color_(color), role_(role), state_(state), position_(position) {
 
 	}
@@ -29,8 +29,8 @@ public:
 public:
 	ColorType getColor() const { return color_; }
 	RoleType getRole() const { return role_; }
-	void setState(StateType state) { state_ = state; }
-	StateType getState() const { return state_; }
+	void setState(PieceState state) { state_ = state; }
+	PieceState getState() const { return state_; }
 	void setPosition(Position& pos) { position_ = pos; }
 	Position getPosition() const { return position_; }
 	PlayerPtr getOwner() const { return owner_; }
@@ -39,7 +39,7 @@ private:
 	PlayerPtr		owner_;
 	const ColorType color_;
 	const RoleType  role_;
-	StateType		state_;
+	PieceState		state_;
 	Position		position_;
 }; 
 
@@ -47,7 +47,7 @@ private:
 class PieceFactory {
 public:
 //用于国际象棋，必须指定所有者，颜色，角色，状态和位置
-	static PiecePtr getPiece(PlayerPtr& player, ColorType color, RoleType role, StateType state, Position& position) {
+	static PiecePtr getPiece(PlayerPtr& player, ColorType color, RoleType role, PieceState state, Position& position) {
 		return std::make_shared<Piece>(player, color, role, state, position);
 	}
 //用于围棋，必须指定所有者和颜色

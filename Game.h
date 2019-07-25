@@ -64,7 +64,7 @@ protected:
 	GameType type_;
 	GameState state_;
 	BoardPtr board_;
-//当前＂存活＂的Piece
+//当前＂ONROADR＂的Piece，＂DEAD＂棋子会被销毁
 	std::vector<PiecePtr> piecesW_;
 	std::vector<PiecePtr> piecesB_;
 	PlayerPtr player1_;

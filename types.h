@@ -24,7 +24,7 @@ typedef enum {
 
 typedef enum {
 	INIT, ONBOARD, DEAD
-} StateType;
+} PieceState;
 
 typedef enum {
 	NOROLE, KING, QUEEN, ROOK, KNIGHT, BISHOP, PAWN
