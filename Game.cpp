@@ -156,6 +156,16 @@ void Game::start() {
 
 	LOG Log("game.log");
 	cout << "game start :)" << endl;
+
+	cout << "command format:";
+	cout << "1.place x y | ";
+	cout << "2.wipe x y | ";
+	cout << "3.move x1 y1 x2 y2 | ";
+	cout << "4.eat x1 y1 x2 y2 | ";
+	cout << "5.query x y | ";
+	cout << "6.stat | ";
+	cout << "7.yield | ";
+	cout << "8.end" << endl;
 	
 	std::string record;//存放簿记内容
 
@@ -164,6 +174,7 @@ void Game::start() {
 		std::string().swap(record);
 		record += getTurn()->getName() + ": ";
 
+		cout << ">>";
 		cout << record;
 		op.readCommand();
 #ifdef DEBUG_ON
@@ -206,10 +217,10 @@ void Game::start() {
 				break;
 			case WIPE:
 				if (wipe(this, position1)) {
-					cout << "this operation is invalid,try again :("  << endl;
+					execFlag = true;
 				}
 				else {
-					execFlag = true;
+					cout << "this operation is invalid,try again :("  << endl;
 				}
 				break;
 			case EAT:
@@ -227,6 +238,7 @@ void Game::start() {
 					cout << "this position is free!!" << endl;
 				} 
 				else {
+					cout << "piece info | ";
 					cout << queryRes << endl;
 				}
 				break;
